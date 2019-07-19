@@ -1749,6 +1749,120 @@ str(data)</code></pre>
 <pre class="r"><code>data &lt;- data[!(is.na(data$ca) | is.na(data$thal)),]
 nrow(data)</code></pre>
 <pre><code>## [1] 297</code></pre>
+<pre class="r"><code>xtabs(~heart+sex,data=data)</code></pre>
+<pre><code>##            sex
+## heart         F   M
+##   Healthy    71  89
+##   Unhealthy  25 112</code></pre>
+<pre class="r"><code>xtabs(~heart+cp,data=data)</code></pre>
+<pre><code>##            cp
+## heart         1   2   3   4
+##   Healthy    16  40  65  39
+##   Unhealthy   7   9  18 103</code></pre>
+<pre class="r"><code>xtabs(~heart+fbs,data=data)</code></pre>
+<pre><code>##            fbs
+## heart         0   1
+##   Healthy   137  23
+##   Unhealthy 117  20</code></pre>
+<pre class="r"><code>xtabs(~heart+restecg,data=data)</code></pre>
+<pre><code>##            restecg
+## heart        0  1  2
+##   Healthy   92  1 67
+##   Unhealthy 55  3 79</code></pre>
+<pre class="r"><code>xtabs(~heart+slope,data=data)</code></pre>
+<pre><code>##            slope
+## heart         1   2   3
+##   Healthy   103  48   9
+##   Unhealthy  36  89  12</code></pre>
+<pre class="r"><code>xtabs(~heart+ca,data=data)</code></pre>
+<pre><code>##            ca
+## heart         2   3   4   5
+##   Healthy   129  21   7   3
+##   Unhealthy  45  44  31  17</code></pre>
+<pre class="r"><code>xtabs(~heart+thal,data=data)</code></pre>
+<pre><code>##            thal
+## heart         2   3   4
+##   Healthy   127   6  27
+##   Unhealthy  37  12  88</code></pre>
+<p>Lets use Generalized linear model using only sex for modeling</p>
+<pre class="r"><code>bilogmodel &lt;- glm(heart~sex,data=data,family=&quot;binomial&quot;)
+summary(bilogmodel)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = heart ~ sex, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.2765  -1.2765  -0.7768   1.0815   1.6404  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -1.0438     0.2326  -4.488 7.18e-06 ***
+## sexM          1.2737     0.2725   4.674 2.95e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 409.95  on 296  degrees of freedom
+## Residual deviance: 386.12  on 295  degrees of freedom
+## AIC: 390.12
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<p>Note the AIC next lets use Generalized linear model using all variables for modeling</p>
+<pre class="r"><code>bilogmodel &lt;- glm(heart~.,data=data,family=&quot;binomial&quot;)
+summary(bilogmodel)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = heart ~ ., family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.0490  -0.4847  -0.1213   0.3039   2.9086  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -6.253978   2.960399  -2.113 0.034640 *  
+## age         -0.023508   0.025122  -0.936 0.349402    
+## sexM         1.670152   0.552486   3.023 0.002503 ** 
+## cp2          1.448396   0.809136   1.790 0.073446 .  
+## cp3          0.393353   0.700338   0.562 0.574347    
+## cp4          2.373287   0.709094   3.347 0.000817 ***
+## trestbps     0.027720   0.011748   2.359 0.018300 *  
+## chol         0.004445   0.004091   1.087 0.277253    
+## fbs1        -0.574079   0.592539  -0.969 0.332622    
+## restecg1     1.000887   2.638393   0.379 0.704424    
+## restecg2     0.486408   0.396327   1.227 0.219713    
+## thalach     -0.019695   0.011717  -1.681 0.092781 .  
+## exang1       0.653306   0.447445   1.460 0.144267    
+## oldpeak      0.390679   0.239173   1.633 0.102373    
+## slope2       1.302289   0.486197   2.679 0.007395 ** 
+## slope3       0.606760   0.939324   0.646 0.518309    
+## ca3          2.237444   0.514770   4.346 1.38e-05 ***
+## ca4          3.271852   0.785123   4.167 3.08e-05 ***
+## ca5          2.188715   0.928644   2.357 0.018428 *  
+## thal3       -0.168439   0.810310  -0.208 0.835331    
+## thal4        1.433319   0.440567   3.253 0.001141 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 409.95  on 296  degrees of freedom
+## Residual deviance: 183.10  on 276  degrees of freedom
+## AIC: 225.1
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>Residual dev and AIC is much better now cal R-Sq</p>
+<pre class="r"><code>ll.null &lt;- bilogmodel$null.deviance/-2
+ll.proposed &lt;- bilogmodel$deviance/-2
+R2 &lt;- (ll.null-ll.proposed)/ll.null
+R2</code></pre>
+<pre><code>## [1] 0.5533531</code></pre>
+<pre class="r"><code>1-pchisq(2*(ll.proposed-ll.null),df=(length(bilogmodel$coefficients)-1))</code></pre>
+<pre><code>## [1] 0</code></pre>
+<p>draw the graph with predicted vs actual</p>
+<pre class="r"><code>predicted.data &lt;- data.frame(probability.of.heart=bilogmodel$fitted.values,heart=data$heart)</code></pre>
 
 
 
