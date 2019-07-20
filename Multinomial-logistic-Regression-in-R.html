@@ -1733,6 +1733,14 @@ pmodel</code></pre>
 <pre class="r"><code>cm &lt;- mean(iris$Species==pmodel)
 cm</code></pre>
 <pre><code>## [1] 0.9866667</code></pre>
+<p>calculate Z statistic and p value</p>
+<pre class="r"><code>z &lt;- summary(mmodel)$coefficients/summary(mmodel)$standard.errors
+p &lt;- (1-pnorm(abs(z),0,1)) * 2
+p</code></pre>
+<pre><code>##            (Intercept) Sepal.Length Sepal.Width Petal.Length Petal.Width
+## versicolor   0.5930295    0.9515807   0.9557828    0.8129231   0.9457075
+## virginica    0.5051288    0.9297757   0.9220685    0.6955898   0.7417773</code></pre>
+<p>**not significant</p>
 
 
 
