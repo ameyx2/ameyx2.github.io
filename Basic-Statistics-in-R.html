@@ -1693,6 +1693,17 @@ summary {
 ## setosa     0.3333333
 ## versicolor 0.3333333
 ## virginica  0.3333333</code></pre>
+<p>relative frequency by splitting in bins</p>
+<pre class="r"><code>table(cut(iris$Petal.Length,seq(1,7,by=0.5),right=FALSE))</code></pre>
+<pre><code>## 
+## [1,1.5) [1.5,2) [2,2.5) [2.5,3) [3,3.5) [3.5,4) [4,4.5) [4.5,5) [5,5.5) 
+##      24      26       0       0       3       8      18      25      18 
+## [5.5,6) [6,6.5) [6.5,7) 
+##      17       7       4</code></pre>
+<p>Cummulative sum</p>
+<pre class="r"><code>cumsum(table(iris$Species))</code></pre>
+<pre><code>##     setosa versicolor  virginica 
+##         50        100        150</code></pre>
 <pre class="r"><code>library(psych)</code></pre>
 <p>Describe function in psych package</p>
 <pre class="r"><code>describe(iris)</code></pre>
