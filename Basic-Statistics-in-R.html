@@ -1666,9 +1666,33 @@ summary {
 ##                 
 ##                 
 ## </code></pre>
+<p>use tapply() to get the mean for Petal.Length grouped by Species</p>
+<pre class="r"><code>tapply(iris$Petal.Length,iris$Species,mean)</code></pre>
+<pre><code>##     setosa versicolor  virginica 
+##      1.462      4.260      5.552</code></pre>
+<p>get low &amp; high</p>
+<pre class="r"><code>range(iris$Petal.Length)</code></pre>
+<pre><code>## [1] 1.0 6.9</code></pre>
 <pre class="r"><code>fivenum(iris$Petal.Length)</code></pre>
 <pre><code>## [1] 1.00 1.60 4.35 5.10 6.90</code></pre>
 <pre class="r"><code># min,lower-hinge, median,upper-hinge,max</code></pre>
+<p>Frequency distribution</p>
+<pre class="r"><code>table(iris$Species)</code></pre>
+<pre><code>## 
+##     setosa versicolor  virginica 
+##         50         50         50</code></pre>
+<p>Freq distribution in columnar format</p>
+<pre class="r"><code>cbind(table(iris$Species))</code></pre>
+<pre><code>##            [,1]
+## setosa       50
+## versicolor   50
+## virginica    50</code></pre>
+<p>get Freq in percentages</p>
+<pre class="r"><code>cbind(table(iris$Species)/nrow(iris))</code></pre>
+<pre><code>##                 [,1]
+## setosa     0.3333333
+## versicolor 0.3333333
+## virginica  0.3333333</code></pre>
 <pre class="r"><code>library(psych)</code></pre>
 <p>Describe function in psych package</p>
 <pre class="r"><code>describe(iris)</code></pre>
