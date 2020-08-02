@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <!-- Load d3.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.4.0/d3.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+    <style>
+        * {
+            margin-top: 5px;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 960px;
+            height: 500px;
+            position: relative;
+        }
+        .center {
+            margin: auto;
+            width: 70%;
+            /* border: 3px solid green; */
+            /* padding: 30px; */
+        }
+        svg {
+            margin: auto;
+            /* width: 50%; */
+            /* border: 3px solid green; */
+            /* padding: 30px; */
+        }
+
+        .img1 {
+            padding-left: 40px;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <input class="img1" type="image" src="images/1.png" width="60" height="60" onclick="location.href='chart1.html'">
+        <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
+        <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="location.href='chart2.html'">
+        <input class="img1" type="image" src="images/3.png" width="60" height="60" onclick="location.href='chart3.html'">
+    <!-- Initialize a select button -->
+</div>
+<div class="center" width="500px">
+    <h5>This chart shows data for state wise total number of COVID19 deaths reported<br/>
+    source: https://github.com/nytimes/covid-19-data <br/>
+    id: ameyhp2@illinois.edu</h5>
+    
+    </div>
+    <select id="selectButton"></select>
+
+    <!-- Create a div where the graph will take place -->
+    <div id="my_dataviz"></div>
+
+    <!-- Color Scale -->
+
+    <script>
+        // set the dimensions and margins of the graph
+        var margin = {
+                top: 10,
+                right: 30,
+                bottom: 60,
+                left: 60
+            },
+            width = 900 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#my_dataviz")
+            .append("svg")
+            // .attr("preserveAspectRatio", "xMinYMin meet")
+            // .attr("viewBox", "0 0 600 400")
+            // // Class to make it responsive.
+            // .classed("svg-content-responsive", true)
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+            .attr("transform",
+                "translate(" + margin.left + "," + margin.top + ")");
+
+        //Read the data
+        d3.csv("us-counties.csv",
+            function (data) {
+
+                // statetotcases = d3.rollup(data, v => d3.sum(v, d => d.cases), d => d.date, d => d.state);
+                // statetotdeaths = d3.rollup(data, v => d3.sum(v, d => d.deaths), d => d.date, d => d.state);
+
+                // statetotcases = d3.nest()
+                //     .key(function (d) {
+                //         return d.state;
+                //     })
+                //     .key(function (d) {
+                //         return d.date;
+                //     })
+                //     .rollup(function (v) {
+                //         return d3.sum(v, function (d) {
+                //             return d.cases;
+                //         });
+                //     })
+                //     .entries(data);
+                
+                //     statetotcases.forEach(function(d){return d.key})
+
+                statetotcases1 = data.filter(function (d) {
+                    return d.state == 'Washington';
+                });
+                // console.log(JSON.stringify(statetotcases1));
+                // console.log(JSON.stringify(statetotcases));
+                // var keys = [];
+                //     for (var key in statetotcases) {
+                //         keys.push(key);
+                //     }
+                //     console.log(keys);
+                // statetotdeaths = d3.nest()
+                //     .key(function (d) {
+                //         return d.state;
+                //     })
+                //     .key(function (d) {
+                //         return d.date;
+                //     })
+                //     .rollup(function (v) {
+                //         return d3.sum(v, function (d) {
+                //             return d.deaths;
+                //         });
+                //     })
+                //     .entries(data);
+
+                // console.log( );
+
+                // List of groups (here I have one group per column)
+                var allGroup = d3.map(data, function (d) {
+                    return (d.state)
+                }).keys()
+
+                // add the options to the button
+                d3.select("#selectButton")
+                    .selectAll('myOptions')
+                    .data(allGroup)
+                    .enter()
+                    .append('option')
+                    .text(function (d) {
+                        return d;
+                    }) // text showed in the menu
+                    .attr("value", function (d) {
+                        return d;
+                    }) // corresponding value returned by the button
+
+
+                var selectedOption1 = document.getElementById('selectButton').value;
+                // console.log(selectedOption1);
+                // var data1 = data;
+                var dataFilter1 = data.filter(function (d) {
+                    return d.state == selectedOption1
+                })
+
+                statetotdeaths = d3.nest()
+                    .key(function (d) {
+                        return d.date;
+                    })
+                    .rollup(function (v) {
+                        return d3.sum(v, function (d) {
+                            return d.deaths;
+                        });
+                    })
+                    .entries(dataFilter1);
+                
+                // console.log(d3.entries(statetotcases));
+                // statetotcases.forEach(function(element) {
+                // console.log(element.value);
+                // });
+
+                var parser = d3.timeParse("%Y-%m-%d");
+                var dates = [];
+                for (let obj of dataFilter1) {
+                    dates.push(parser(obj.date));
+                }
+                // console.log(dates);
+
+                // A color scale: one color for each group
+                var myColor = d3.scaleOrdinal()
+                    .domain(allGroup)
+                    .range(d3.schemeSet2);
+
+                var myColor1 = d3.scaleLinear().domain([0, d3.max(statetotdeaths, function (d) {
+                        return +d.value;
+                    })])
+                        .range(["orange", "red"])
+
+                // Add X axis --> it is a date format
+                var x = d3.scaleLinear()
+                    // .domain(d3.extent(dataFilter1, function (d) {
+                    //     return d.date;
+                    // }))
+                    .domain(d3.extent(dates))
+                    .range([0, width]);
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%Y-%m-%d")))
+                    .selectAll("text")
+                    .attr("y", 0)
+                    .attr("x", 9)
+                    .attr("dy", ".35em")
+                    .attr("transform", "rotate(90)")
+                    .style("text-anchor", "start");
+
+                // Add Y axis
+                var y = d3.scaleLinear()
+                    .domain([0, d3.max(statetotdeaths, function (d) {
+                        return +d.value;
+                    })])
+                    .range([height, 0]);
+                svg.append("g")
+                    .call(d3.axisLeft(y))
+                    .append("text")
+                    .attr("class", "axis-title")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", margin.top)
+                    .attr("dy", ".71em")
+                    .style("text-anchor", "end")
+                    .attr("fill", "#5D6971")
+                    .text("Deaths Reported");
+
+                // var area = d3.area()
+                //     .x(function(d) { return x(parser(d.key)); })
+                //     .y0(height)
+                //     .y1(function(d) { return y(+d.value); });
+                
+                // svg.append("path")
+                //     .data([statetotcases])
+                //     .attr("class", "area")
+                //     .attr("d", area)
+                //     .style("fill", function (d) {
+                //         return myColor1(+d.value)
+                //     });
+                // Initialize line with first group of the list
+                // var line = svg
+                //     .append('g')
+                //     .append("path")
+                //     .datum(statetotcases)
+                //     // .datum(data.filter(function (d) {
+                //     //     return d.state == selectedOption1
+                //     // }))
+                //     .attr("d", d3.line()
+                //         .x(function (d) {
+                //             return x(parser(d.key))
+                //         })
+                //         .y(function (d) {
+                //             return y(+d.value)
+                //         })
+                //     )
+                //     .attr("stroke", function (d) {
+                //         return myColor1(+d.value)
+                //     })
+                //     .style("stroke-width", 4)
+                //     .style("fill", "none");
+
+                var div = d3.select("body").append("div")
+                    .attr("class", "tooltip")
+                    .style("opacity", 0)
+                    .style("position", "absolute")
+                    // .style("z-index", "10")
+                    // .style("visibility", "hidden")
+                    .style("background", "#ddd");
+                    // console.log(d3.extent(dates));
+                    // xtime = d3
+                    // .scaleTime()
+                    // .domain(d3.extent(dates))
+                    // .range([margin.left, width - margin.right])
+                    var format = d3.timeFormat("%Y-%m-%d");
+                    // dates = dates.forEach(function(d){ d= format(d); return d;});
+                    // console.log(dates);
+                    var xscale=d3.scaleBand().domain(d3.extent(dates)).range([0,width - margin.right]);
+                    // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
+                    var bandw=xscale.bandwidth();
+                    // console.log(bandw);
+                    svg.selectAll("rect")
+                        .data(statetotdeaths)
+                        .enter().append("rect")
+                        .attr("width",bandw*0.02)
+                        .attr("height",function(d) { return height - y(+d.value); })
+                        // .attr("x",function(d,i) { return (bandw*i); })
+                        .attr("x",d => x(new Date(d.key)))
+                        // .attr("x",d => xscale(d.key))
+                        .attr("y",function(d) { return y(+d.value); })
+                        .style("fill", function (d) {
+                        return myColor1(+d.value)
+                    })
+                    .on("mouseover", function (d) {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9)
+                        // .style("visibility", "visibile");		
+                        div.html("Date: " + (d.key) + "<br/>" + "Deaths reported: " + d.value)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function (d) {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+                // svg.selectAll("dot")
+                //     .data(statetotcases)
+                //     .enter()
+                //     .append("circle")
+                //     .style("fill", function (d) {
+                //         return myColor1(+d.value)
+                //     })
+                //     .attr("r", 3.5)
+                //     .attr("cx", function (d) {
+                //         return x(parser(d.key));
+                //     })
+                //     .attr("cy", function (d) {
+                //         return y(+d.value);
+                //     })
+                //     .on("mouseover", function (d) {
+                //         div.transition()
+                //             .duration(200)
+                //             .style("opacity", .9)
+                //         // .style("visibility", "visibile");		
+                //         div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
+                //             .style("left", (d3.event.pageX) + "px")
+                //             .style("top", (d3.event.pageY - 28) + "px");
+                //     })
+                //     .on("mouseout", function (d) {
+                //         div.transition()
+                //             .duration(500)
+                //             .style("opacity", 0);
+                //     })
+                //     .exit()
+                //     .remove();
+
+                // A function that update the chart
+                function update(selectedGroup) {
+
+                    // Create new data with the selection?
+                    dataFilter1 = data.filter(function (d) {
+                        return d.state == selectedGroup
+                    })
+                    // console.log(dataFilter1);
+                    statetotdeaths = d3.nest()
+                    .key(function (d) {
+                        return d.date;
+                    })
+                    .rollup(function (v) {
+                        return d3.sum(v, function (d) {
+                            return d.deaths;
+                        });
+                    })
+                    .entries(dataFilter1);
+
+                    dates = [];
+                    for (let obj of dataFilter1) {
+                        dates.push(parser(obj.date));
+                    }
+                    // console.log(dates);
+                    // Add X axis --> it is a date format
+                    d3.selectAll(".tick")
+                        .remove();
+                    d3.selectAll("circle")
+                        .remove();
+                    d3.selectAll(".area")
+                        .remove();
+                    d3.selectAll("rect")
+                        .remove();
+                    x = d3.scaleLinear()
+                        .domain(d3.extent(dates))
+                        .range([margin.left,width - margin.right]);
+                    svg.append("g")
+                        .attr("transform", "translate(0," + height + ")")
+                        .call(d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%Y-%m-%d")))
+                        .selectAll("text")
+                        .attr("y", 0)
+                        .attr("x", 9)
+                        .attr("dy", ".35em")
+                        .attr("transform", "rotate(90)")
+                        .style("text-anchor", "start");
+
+                    // Add Y axis
+                    y = d3.scaleLinear()
+                        .domain([0, d3.max(statetotdeaths, function (d) {
+                            return +d.value;
+                        })])
+                        .range([height, 0]);
+                    svg.append("g")
+                        .call(d3.axisLeft(y));
+
+                    //     area = d3.area()
+                    // .x(function(d) { return x(parser(d.key)); })
+                    // .y0(height)
+                    // .y1(function(d) { return y(+d.value); });
+                
+                // svg.append("path")
+                //     .data([statetotcases])
+                //     .attr("class", "area")
+                //     .attr("d", area)
+                //     .style("fill", function (d) {
+                //         return myColor1(+d.value)
+                //     });
+
+                    // Give these new data to update line
+                    // line
+                    //     .datum(statetotcases)
+                    //     // .transition()
+                    //     // .duration(1000)
+                    //     .attr("d", d3.line()
+                    //         .x(function (d) {
+                    //             return x(parser(d.key))
+                    //         })
+                    //         .y(function (d) {
+                    //             return y(+d.value)
+                    //         })
+                    //     )
+                    //     .attr("stroke", function (d) {
+                    //         return myColor1(+d.value)
+                    //     })
+                    console.log(dates)
+                    xscale=d3.scaleBand().domain(d3.extent(dates)).range([margin.left,width - margin.right]);
+                    // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
+                    bandw=xscale.bandwidth();
+                    // console.log(bandw);
+                    svg.selectAll("rect")
+                        .data(statetotdeaths)
+                        .enter().append("rect")
+                        .attr("width",bandw*0.05)
+                        .attr("height",function(d) { return height - y(+d.value); })
+                        // .attr("x",function(d,i) { return (bandw*i); })
+                        .attr("x",d => x(new Date(d.key)))
+                        // .attr("x",d => xscale(d.key))
+                        .attr("y",function(d) { return y(+d.value); })
+                        .style("fill", function (d) {
+                        return myColor1(+d.value)
+                    })
+                    .on("mouseover", function (d) {
+                        div.transition()
+                            .duration(200)
+                            .style("opacity", .9)
+                        // .style("visibility", "visibile");		
+                        div.html("Date: " + (d.key) + "<br/>" + "Deaths reported: " + d.value)
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function (d) {
+                        div.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    });
+
+
+                    // svg.selectAll("dot")
+                    // .data(statetotcases)
+                    // .enter()
+                    // .append("circle")
+                    // .attr("r", 5)
+                    // .attr("cx", function (d) {
+                    //     return x(parser(d.key));
+                    // })
+                    // .attr("cy", function (d) {
+                    //     return y(+d.value);
+                    // })
+                    // .on("mouseover", function (d) {
+                    //     div.transition()
+                    //         .duration(200)
+                    //         .style("opacity", .9)
+                    //     // .style("visibility", "visibile");		
+                    //     div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
+                    //         .style("left", (d3.event.pageX) + "px")
+                    //         .style("top", (d3.event.pageY - 28) + "px");
+                    // })
+                    // .on("mouseout", function (d) {
+                    //     div.transition()
+                    //         .duration(500)
+                    //         .style("opacity", 0);
+                    // });
+                    // .exit()
+                    // .remove();
+
+                    // svg.selectAll("circle")
+                    // .style("fill", function (d) {
+                    //     return myColor1(+d.value)
+                    // });
+
+                }
+
+                // When the button is changed, run the updateChart function
+                d3.select("#selectButton").on("change", function (d) {
+                    // recover the option that has been chosen
+                    var selectedOption = d3.select(this).property("value")
+                    // run the updateChart function with this selected option
+                    update(selectedOption)
+                })
+
+            })
+    </script>
+</body>
+
+</html>
