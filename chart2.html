@@ -263,74 +263,6 @@
                     .attr("fill", "#5D6971")
                     .text("Cases Reported");
 
-                    svg.append("path")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .attr("stroke-dasharray", "5,5")
-                .attr("stroke-width", 1.5)
-                .attr("d", "M" + (x(parser("2020-02-26"))).toString() + " " + (height).toString() + "," + (x(parser("2020-02-26"))).toString() + " " + (0).toString() );
-
-                svg.append("text")
-                    .attr("x", x(parser("2020-02-26")) + 4)             
-                    .attr("y", 15)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("First Case"); 
-                svg.append("text")
-                    .attr("x", x(parser("2020-02-26")) + 4)             
-                    .attr("y", 28)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("in USA"); 
-                svg.append("text")
-                    .attr("x", x(parser("2020-02-26")) + 4)             
-                    .attr("y", 41)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("Feb 26"); 
-
-
-                svg.append("path")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .attr("stroke-dasharray", "5,5")
-                .attr("stroke-width", 1.5)
-                .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-13"))).toString() + " " + (0).toString() );
-
-                svg.append("text")
-                    .attr("x", x(parser("2020-03-13")) + 4)             
-                    .attr("y", 15)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("National Emergency"); 
-                svg.append("text")
-                    .attr("x", x(parser("2020-03-13")) + 4)             
-                    .attr("y", 28)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("Travel ban"); 
-
-
-                    svg.append("path")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .attr("stroke-dasharray", "5,5")
-                .attr("stroke-width", 1.5)
-                .attr("d", "M" + (x(parser("2020-06-10"))).toString() + " " + (height).toString() + "," + (x(parser("2020-06-10"))).toString() + " " + (0).toString() );
-
-                svg.append("text")
-                    .attr("x", x(parser("2020-06-10")) + 4)             
-                    .attr("y", 15)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("USA cases"); 
-                svg.append("text")
-                    .attr("x", x(parser("2020-06-10")) + 4)             
-                    .attr("y", 28)
-                    .attr("text-anchor", "left")  
-                    .style("font-size", "12px")
-                    .text("pass 2M"); 
-
                 
                
             
@@ -444,6 +376,77 @@
                     })
                     .exit()
                     .remove();
+
+                    var dista=50;
+                    svg.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-03-27"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-27"))).toString() + " " + (0+dista).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 15+dista)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("USA cases"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 28+dista)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("pass 100K"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 41+dista)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("Mar 27"); 
+
+
+                svg.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-13"))).toString() + " " + (0).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("y", 15)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("National Emergency"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("y", 28)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("Travel ban"); 
+
+
+                    svg.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-06-10"))).toString() + " " + (height).toString() + "," + (x(parser("2020-06-10"))).toString() + " " + (0).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-06-10")) + 4)             
+                    .attr("y", 15)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("USA cases"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-06-10")) + 4)             
+                    .attr("y", 28)
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("pass 2M"); 
+
+
 
                 // A function that update the chart
                 function update(selectedGroup) {
