@@ -18,12 +18,14 @@
             height: 500px;
             position: relative;
         }
+
         .center {
             margin: auto;
             width: 70%;
             /* border: 3px solid green; */
             /* padding: 30px; */
         }
+
         svg {
             margin: auto;
             /* width: 50%; */
@@ -40,21 +42,28 @@
 
 <body>
     <div>
-        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 situation across different states of Continental USA</h2>
-        <h5 style="margin-left:30px;"><span  style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id: ameyhp2@illinois.edu</a></span><span>source: <a href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span></h5>
+        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 situation across different states of Continental USA
+        </h2>
+        <h5 style="margin-left:30px;"><span style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id:
+                    ameyhp2@illinois.edu</a></span><span>source: <a
+                    href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span>
+        </h5>
 
     </div>
     <div class="center">
-        <input class="img1" type="image" src="images/1.png" width="60" height="60" onclick="location.href='chart1.html'">
+        <input class="img1" type="image" src="images/1.png" width="60" height="60"
+            onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
-        <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="location.href='chart2.html'">
-        <input class="img1" type="image" src="images/3.png" width="60" height="60" onclick="location.href='chart3.html'">
-    <!-- Initialize a select button -->
-</div>
-<div class="center" width="500px">
-<h5>This chart shows data for state wise total number of COVID19 cases reported </h5>
+        <input class="img1" type="image" src="images/2.png" width="60" height="60"
+            onclick="location.href='chart2.html'">
+        <input class="img1" type="image" src="images/3.png" width="60" height="60"
+            onclick="location.href='chart3.html'">
+        <!-- Initialize a select button -->
+    </div>
+    <div class="center" width="500px">
+        <h5>This chart shows data for state wise total number of COVID19 cases reported </h5>
 
-</div>
+    </div>
     <select id="selectButton"></select>
 
     <!-- Create a div where the graph will take place -->
@@ -86,6 +95,7 @@
             .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
 
+
         //Read the data
         d3.csv("us-counties.csv",
             function (data) {
@@ -106,7 +116,7 @@
                 //         });
                 //     })
                 //     .entries(data);
-                
+
                 //     statetotcases.forEach(function(d){return d.key})
 
                 // statetotcases1 = data.filter(function (d) {
@@ -157,15 +167,27 @@
                 var selectedOption1 = document.getElementById('selectButton').value;
                 // console.log(selectedOption1);
                 // var data1 = data;
+                svg.append("text")
+                    .attr("x", width * 0.20)
+                    .attr("y", height * 0.30)
+                    .attr("class", "bgtext")
+                    .style("font-variant", "small-caps")
+                    .style("font-size", "2.5em")
+                    .text(selectedOption1)
+                    .attr("font-family", "sans-serif")
+                    .attr("font-size", "20px")
+                    .attr("fill", "#dcd6d3");
                 var dataFilter1 = data.filter(function (d) {
                     return d.state == selectedOption1
-                })
+                });
 
                 var parser = d3.timeParse("%Y-%m-%d");
 
                 statetotcasesM = d3.nest()
                     .key(function (d) {
-                        return parser(d.date).toLocaleString('default', { month: 'long' });
+                        return parser(d.date).toLocaleString('default', {
+                            month: 'long'
+                        });
                     })
                     .rollup(function (v) {
                         return d3.sum(v, function (d) {
@@ -184,7 +206,7 @@
                         });
                     })
                     .entries(dataFilter1);
-                
+
                 // console.log(d3.entries(statetotcases));
                 // statetotcases.forEach(function(element) {
                 // console.log(element.value);
@@ -205,7 +227,7 @@
                 var myColor1 = d3.scaleLinear().domain([0, d3.max(statetotcases, function (d) {
                         return +d.value;
                     })])
-                        .range(["orange", "red"])
+                    .range(["orange", "red"])
 
                 // Add X axis --> it is a date format
                 var x = d3.scaleLinear()
@@ -242,10 +264,14 @@
                     .text("Cases Reported");
 
                 var area = d3.area()
-                    .x(function(d) { return x(parser(d.key)); })
+                    .x(function (d) {
+                        return x(parser(d.key));
+                    })
                     .y0(height)
-                    .y1(function(d) { return y(+d.value); });
-                
+                    .y1(function (d) {
+                        return y(+d.value);
+                    });
+
                 svg.append("path")
                     .data([statetotcases])
                     .attr("class", "area")
@@ -283,38 +309,38 @@
                     // .style("visibility", "hidden")
                     .style("background", "#ddd");
 
-//                     const monthNames = ["January", "February", "March", "April", "May", "June",
-//   "July", "August", "September", "October", "November", "December"];
-//                     var xscale=d3.scaleBand().domain(monthNames).range([0,width - margin.right]);
-//                     // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
-//                     var bandw=xscale.bandwidth();
-//                     console.log(bandw);
-//                     svg.selectAll("rect")
-//                         .data(statetotcasesM)
-//                         .enter().append("rect")
-//                         .attr("width",xscale.bandwidth())
-//                         .attr("height",function(d) { return height-margin.bottom; })
-//                         // .attr("x",function(d,i) { return (bandw*i); })
-//                         .attr("x",d => xscale(new Date(d.key)))
-//                         // .attr("x",d => xscale(d.key))
-//                         .attr("y",function(d) { return y(+d.value); })
-//                         .style("fill", function (d) {
-//                         return myColor1(+d.value)
-//                     })
-//                     .on("mouseover", function (d) {
-//                         div.transition()
-//                             .duration(200)
-//                             .style("opacity", .9)
-//                         // .style("visibility", "visibile");		
-//                         div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-//                             .style("left", (d3.event.pageX) + "px")
-//                             .style("top", (d3.event.pageY - 28) + "px");
-//                     })
-//                     .on("mouseout", function (d) {
-//                         div.transition()
-//                             .duration(500)
-//                             .style("opacity", 0);
-//                     });
+                //                     const monthNames = ["January", "February", "March", "April", "May", "June",
+                //   "July", "August", "September", "October", "November", "December"];
+                //                     var xscale=d3.scaleBand().domain(monthNames).range([0,width - margin.right]);
+                //                     // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
+                //                     var bandw=xscale.bandwidth();
+                //                     console.log(bandw);
+                //                     svg.selectAll("rect")
+                //                         .data(statetotcasesM)
+                //                         .enter().append("rect")
+                //                         .attr("width",xscale.bandwidth())
+                //                         .attr("height",function(d) { return height-margin.bottom; })
+                //                         // .attr("x",function(d,i) { return (bandw*i); })
+                //                         .attr("x",d => xscale(new Date(d.key)))
+                //                         // .attr("x",d => xscale(d.key))
+                //                         .attr("y",function(d) { return y(+d.value); })
+                //                         .style("fill", function (d) {
+                //                         return myColor1(+d.value)
+                //                     })
+                //                     .on("mouseover", function (d) {
+                //                         div.transition()
+                //                             .duration(200)
+                //                             .style("opacity", .9)
+                //                         // .style("visibility", "visibile");		
+                //                         div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
+                //                             .style("left", (d3.event.pageX) + "px")
+                //                             .style("top", (d3.event.pageY - 28) + "px");
+                //                     })
+                //                     .on("mouseout", function (d) {
+                //                         div.transition()
+                //                             .duration(500)
+                //                             .style("opacity", 0);
+                //                     });
 
                 svg.selectAll("dot")
                     .data(statetotcases)
@@ -356,18 +382,18 @@
                     })
                     // console.log(dataFilter1);
                     statetotcases = d3.nest()
-                    .key(function (d) {
-                        return d.date;
-                    })
-                    .rollup(function (v) {
-                        return d3.sum(v, function (d) {
-                            return d.cases;
-                        });
-                    })
-                    .entries(dataFilter1);
+                        .key(function (d) {
+                            return d.date;
+                        })
+                        .rollup(function (v) {
+                            return d3.sum(v, function (d) {
+                                return d.cases;
+                            });
+                        })
+                        .entries(dataFilter1);
                     myColor1 = d3.scaleLinear().domain([0, d3.max(statetotcases, function (d) {
-                        return +d.value;
-                    })])
+                            return +d.value;
+                        })])
                         .range(["orange", "red"])
                     dates = [];
                     for (let obj of dataFilter1) {
@@ -383,9 +409,11 @@
                         .remove();
                     d3.selectAll("rect")
                         .remove();
+                    d3.selectAll(".bgtext")
+                        .remove();
                     x = d3.scaleLinear()
                         .domain(d3.extent(dates))
-                        .range([margin.left,width - margin.right]);
+                        .range([margin.left, width - margin.right]);
                     svg.append("g")
                         .attr("transform", "translate(0," + height + ")")
                         .call(d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%Y-%m-%d")))
@@ -396,6 +424,20 @@
                         .attr("transform", "rotate(90)")
                         .style("text-anchor", "start");
 
+                    svg.append("text")
+                        .attr("x", width * 0.20)
+                        .attr("y", height * 0.30)
+                        .attr("class", "bgtext")
+                        .style("font-variant", "small-caps")
+                        .style("font-size", "2.5em")
+                        .text(selectedGroup)
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", "20px")
+                        .attr("fill", "#dcd6d3");
+                    var dataFilter1 = data.filter(function (d) {
+                        return d.state == selectedOption1
+                    });
+
                     // Add Y axis
                     y = d3.scaleLinear()
                         .domain([0, d3.max(statetotcases, function (d) {
@@ -405,21 +447,25 @@
                     svg.append("g")
                         .call(d3.axisLeft(y));
 
-                        area = d3.area()
-                    .x(function(d) { return x(parser(d.key)); })
-                    .y0(height)
-                    .y1(function(d) { return y(+d.value); });
-                
-                svg.append("path")
-                    .data([statetotcases])
-                    .attr("class", "area")
-                    .attr("d", area)
-                    // .attr("y",function(d) { return y(0); })
-                    .transition()
-                    .duration(3000)
-                    .style("fill", function (d) {
-                        return myColor1(+d.value)
-                    });
+                    area = d3.area()
+                        .x(function (d) {
+                            return x(parser(d.key));
+                        })
+                        .y0(height)
+                        .y1(function (d) {
+                            return y(+d.value);
+                        });
+
+                    svg.append("path")
+                        .data([statetotcases])
+                        .attr("class", "area")
+                        .attr("d", area)
+                        // .attr("y",function(d) { return y(0); })
+                        .transition()
+                        .duration(3000)
+                        .style("fill", function (d) {
+                            return myColor1(+d.value)
+                        });
 
                     // Give these new data to update line
                     line
@@ -437,7 +483,7 @@
                         .attr("stroke", function (d) {
                             return myColor1(+d.value)
                         })
-                    
+
                     // xscale=d3.scaleBand().domain(d3.extent(dates)).range([margin.left,width - margin.right]);
                     // // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
                     // bandw=xscale.bandwidth();
@@ -471,37 +517,37 @@
 
 
                     svg.selectAll("dot")
-                    .data(statetotcases)
-                    .enter()
-                    .append("circle")
-                    .attr("r", 5)
-                    .attr("cx", function (d) {
-                        return x(parser(d.key));
-                    })
-                    .attr("cy", function (d) {
-                        return y(+d.value);
-                    })
-                    .on("mouseover", function (d) {
-                        div.transition()
-                            .duration(200)
-                            .style("opacity", .9)
-                        // .style("visibility", "visibile");		
-                        div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                            .style("left", (d3.event.pageX) + "px")
-                            .style("top", (d3.event.pageY - 28) + "px");
-                    })
-                    .on("mouseout", function (d) {
-                        div.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-                    });
+                        .data(statetotcases)
+                        .enter()
+                        .append("circle")
+                        .attr("r", 5)
+                        .attr("cx", function (d) {
+                            return x(parser(d.key));
+                        })
+                        .attr("cy", function (d) {
+                            return y(+d.value);
+                        })
+                        .on("mouseover", function (d) {
+                            div.transition()
+                                .duration(200)
+                                .style("opacity", .9)
+                            // .style("visibility", "visibile");		
+                            div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
+                                .style("left", (d3.event.pageX) + "px")
+                                .style("top", (d3.event.pageY - 28) + "px");
+                        })
+                        .on("mouseout", function (d) {
+                            div.transition()
+                                .duration(500)
+                                .style("opacity", 0);
+                        });
                     // .exit()
                     // .remove();
 
                     svg.selectAll("circle")
-                    .style("fill", function (d) {
-                        return myColor1(+d.value)
-                    });
+                        .style("fill", function (d) {
+                            return myColor1(+d.value)
+                        });
 
                 }
 
