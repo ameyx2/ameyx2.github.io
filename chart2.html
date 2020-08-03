@@ -39,6 +39,11 @@
 </head>
 
 <body>
+    <div>
+        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 situation across different states of Continental USA</h2>
+        <h5 style="margin-left:30px;"><span  style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id: ameyhp2@illinois.edu</a></span><span>source: <a href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span></h5>
+
+    </div>
     <div class="center">
         <input class="img1" type="image" src="images/1.png" width="60" height="60" onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
@@ -47,9 +52,7 @@
     <!-- Initialize a select button -->
 </div>
 <div class="center" width="500px">
-<h5>This chart shows data for state wise total number of COVID19 cases reported<br/>
-source: https://github.com/nytimes/covid-19-data  <br/>
-id: ameyhp2@illinois.edu</h5>
+<h5>This chart shows data for state wise total number of COVID19 cases reported </h5>
 
 </div>
     <select id="selectButton"></select>
@@ -106,9 +109,9 @@ id: ameyhp2@illinois.edu</h5>
                 
                 //     statetotcases.forEach(function(d){return d.key})
 
-                statetotcases1 = data.filter(function (d) {
-                    return d.state == 'Washington';
-                });
+                // statetotcases1 = data.filter(function (d) {
+                //     return d.state == 'Washington';
+                // });
                 // console.log(JSON.stringify(statetotcases1));
                 // console.log(JSON.stringify(statetotcases));
                 // var keys = [];
@@ -116,19 +119,19 @@ id: ameyhp2@illinois.edu</h5>
                 //         keys.push(key);
                 //     }
                 //     console.log(keys);
-                statetotdeaths = d3.nest()
-                    .key(function (d) {
-                        return d.state;
-                    })
-                    .key(function (d) {
-                        return d.date;
-                    })
-                    .rollup(function (v) {
-                        return d3.sum(v, function (d) {
-                            return d.deaths;
-                        });
-                    })
-                    .entries(data);
+                // statetotdeaths = d3.nest()
+                //     .key(function (d) {
+                //         return d.state;
+                //     })
+                //     .key(function (d) {
+                //         return d.date;
+                //     })
+                //     .rollup(function (v) {
+                //         return d3.sum(v, function (d) {
+                //             return d.deaths;
+                //         });
+                //     })
+                //     .entries(data);
 
                 // console.log( );
 
@@ -158,6 +161,19 @@ id: ameyhp2@illinois.edu</h5>
                     return d.state == selectedOption1
                 })
 
+                var parser = d3.timeParse("%Y-%m-%d");
+
+                statetotcasesM = d3.nest()
+                    .key(function (d) {
+                        return parser(d.date).toLocaleString('default', { month: 'long' });
+                    })
+                    .rollup(function (v) {
+                        return d3.sum(v, function (d) {
+                            return d.cases;
+                        });
+                    })
+                    .entries(dataFilter1);
+                console.log(statetotcasesM);
                 statetotcases = d3.nest()
                     .key(function (d) {
                         return d.date;
@@ -174,7 +190,7 @@ id: ameyhp2@illinois.edu</h5>
                 // console.log(element.value);
                 // });
 
-                var parser = d3.timeParse("%Y-%m-%d");
+                parser = d3.timeParse("%Y-%m-%d");
                 var dates = [];
                 for (let obj of dataFilter1) {
                     dates.push(parser(obj.date));
@@ -267,36 +283,38 @@ id: ameyhp2@illinois.edu</h5>
                     // .style("visibility", "hidden")
                     .style("background", "#ddd");
 
-                    // var xscale=d3.scaleBand().domain(d3.extent(dates)).range([0,width - margin.right]);
-                    // // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
-                    // var bandw=xscale.bandwidth();
-                    // console.log(bandw);
-                    // svg.selectAll("rect")
-                    //     .data(statetotcases)
-                    //     .enter().append("rect")
-                    //     .attr("width",xscale.bandwidth())
-                    //     .attr("height",function(d) { return height - y(+d.value); })
-                    //     // .attr("x",function(d,i) { return (bandw*i); })
-                    //     .attr("x",d => x(new Date(d.key)))
-                    //     // .attr("x",d => xscale(d.key))
-                    //     .attr("y",function(d) { return y(+d.value); })
-                    //     .style("fill", function (d) {
-                    //     return myColor1(+d.value)
-                    // })
-                    // .on("mouseover", function (d) {
-                    //     div.transition()
-                    //         .duration(200)
-                    //         .style("opacity", .9)
-                    //     // .style("visibility", "visibile");		
-                    //     div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                    //         .style("left", (d3.event.pageX) + "px")
-                    //         .style("top", (d3.event.pageY - 28) + "px");
-                    // })
-                    // .on("mouseout", function (d) {
-                    //     div.transition()
-                    //         .duration(500)
-                    //         .style("opacity", 0);
-                    // });
+//                     const monthNames = ["January", "February", "March", "April", "May", "June",
+//   "July", "August", "September", "October", "November", "December"];
+//                     var xscale=d3.scaleBand().domain(monthNames).range([0,width - margin.right]);
+//                     // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
+//                     var bandw=xscale.bandwidth();
+//                     console.log(bandw);
+//                     svg.selectAll("rect")
+//                         .data(statetotcasesM)
+//                         .enter().append("rect")
+//                         .attr("width",xscale.bandwidth())
+//                         .attr("height",function(d) { return height-margin.bottom; })
+//                         // .attr("x",function(d,i) { return (bandw*i); })
+//                         .attr("x",d => xscale(new Date(d.key)))
+//                         // .attr("x",d => xscale(d.key))
+//                         .attr("y",function(d) { return y(+d.value); })
+//                         .style("fill", function (d) {
+//                         return myColor1(+d.value)
+//                     })
+//                     .on("mouseover", function (d) {
+//                         div.transition()
+//                             .duration(200)
+//                             .style("opacity", .9)
+//                         // .style("visibility", "visibile");		
+//                         div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
+//                             .style("left", (d3.event.pageX) + "px")
+//                             .style("top", (d3.event.pageY - 28) + "px");
+//                     })
+//                     .on("mouseout", function (d) {
+//                         div.transition()
+//                             .duration(500)
+//                             .style("opacity", 0);
+//                     });
 
                 svg.selectAll("dot")
                     .data(statetotcases)
@@ -347,7 +365,10 @@ id: ameyhp2@illinois.edu</h5>
                         });
                     })
                     .entries(dataFilter1);
-
+                    myColor1 = d3.scaleLinear().domain([0, d3.max(statetotcases, function (d) {
+                        return +d.value;
+                    })])
+                        .range(["orange", "red"])
                     dates = [];
                     for (let obj of dataFilter1) {
                         dates.push(parser(obj.date));
@@ -393,6 +414,9 @@ id: ameyhp2@illinois.edu</h5>
                     .data([statetotcases])
                     .attr("class", "area")
                     .attr("d", area)
+                    // .attr("y",function(d) { return y(0); })
+                    .transition()
+                    .duration(3000)
                     .style("fill", function (d) {
                         return myColor1(+d.value)
                     });

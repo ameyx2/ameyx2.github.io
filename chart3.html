@@ -39,6 +39,11 @@
 </head>
 
 <body>
+    <div>
+        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 situation across different states of Continental USA</h2>
+        <h5 style="margin-left:30px;"><span  style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id: ameyhp2@illinois.edu</a></span><span>source: <a href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span></h5>
+
+    </div>
     <div class="center">
         <input class="img1" type="image" src="images/1.png" width="60" height="60" onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
@@ -47,9 +52,7 @@
     <!-- Initialize a select button -->
 </div>
 <div class="center" width="500px">
-    <h5>This chart shows data for state wise total number of COVID19 deaths reported<br/>
-    source: https://github.com/nytimes/covid-19-data <br/>
-    id: ameyhp2@illinois.edu</h5>
+    <h5>This chart shows data for state wise total number of COVID19 deaths reported</h5>
     
     </div>
     <select id="selectButton"></select>
@@ -428,12 +431,15 @@
                     svg.selectAll("rect")
                         .data(statetotdeaths)
                         .enter().append("rect")
-                        .attr("width",bandw*0.05)
-                        .attr("height",function(d) { return height - y(+d.value); })
-                        // .attr("x",function(d,i) { return (bandw*i); })
+                        .attr("width",bandw*0.03)
                         .attr("x",d => x(new Date(d.key)))
                         // .attr("x",d => xscale(d.key))
+                        .attr("y",function(d) { return y(0); })
+                        .transition()
+                        .duration(3000)
                         .attr("y",function(d) { return y(+d.value); })
+                        .attr("height",function(d) { return height - y(+d.value); })
+                        // .attr("x",function(d,i) { return (bandw*i); })
                         .style("fill", function (d) {
                         return myColor1(+d.value)
                     })
