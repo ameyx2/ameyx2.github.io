@@ -168,8 +168,8 @@
                 // console.log(selectedOption1);
                 // var data1 = data;
                 svg.append("text")
-                    .attr("x", width * 0.20)
-                    .attr("y", height * 0.30)
+                    .attr("x", width * 0.10)
+                    .attr("y", height * 0.40)
                     .attr("class", "bgtext")
                     .style("font-variant", "small-caps")
                     .style("font-size", "2.5em")
@@ -195,7 +195,7 @@
                         });
                     })
                     .entries(dataFilter1);
-                console.log(statetotcasesM);
+                // console.log(statetotcasesM);
                 statetotcases = d3.nest()
                     .key(function (d) {
                         return d.date;
@@ -380,6 +380,7 @@
                     var dista=50;
                     svg.append("path")
                 .attr("fill", "none")
+                .attr("class","annot")
                 .attr("stroke", "black")
                 .attr("stroke-dasharray", "5,5")
                 .attr("stroke-width", 1.5)
@@ -389,17 +390,20 @@
                     .attr("x", x(parser("2020-03-27")) + 4)             
                     .attr("y", 15+dista)
                     .attr("text-anchor", "left")  
+                    .attr("class","annot")
                     .style("font-size", "12px")
                     .text("USA cases"); 
                 svg.append("text")
                     .attr("x", x(parser("2020-03-27")) + 4)             
                     .attr("y", 28+dista)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("pass 100K"); 
                 svg.append("text")
                     .attr("x", x(parser("2020-03-27")) + 4)             
                     .attr("y", 41+dista)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("Mar 27"); 
@@ -408,6 +412,7 @@
                 svg.append("path")
                 .attr("fill", "none")
                 .attr("stroke", "black")
+                .attr("class","annot")
                 .attr("stroke-dasharray", "5,5")
                 .attr("stroke-width", 1.5)
                 .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-13"))).toString() + " " + (0).toString() );
@@ -415,12 +420,14 @@
                 svg.append("text")
                     .attr("x", x(parser("2020-03-13")) + 4)             
                     .attr("y", 15)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("National Emergency"); 
                 svg.append("text")
                     .attr("x", x(parser("2020-03-13")) + 4)             
                     .attr("y", 28)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("Travel ban"); 
@@ -428,6 +435,7 @@
 
                     svg.append("path")
                 .attr("fill", "none")
+                .attr("class","annot")
                 .attr("stroke", "black")
                 .attr("stroke-dasharray", "5,5")
                 .attr("stroke-width", 1.5)
@@ -436,12 +444,14 @@
                 svg.append("text")
                     .attr("x", x(parser("2020-06-10")) + 4)             
                     .attr("y", 15)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("USA cases"); 
                 svg.append("text")
                     .attr("x", x(parser("2020-06-10")) + 4)             
                     .attr("y", 28)
+                    .attr("class","annot")
                     .attr("text-anchor", "left")  
                     .style("font-size", "12px")
                     .text("pass 2M"); 
@@ -486,6 +496,8 @@
                         .remove();
                     d3.selectAll(".bgtext")
                         .remove();
+                    d3.selectAll(".annot")
+                        .remove();
                     x = d3.scaleLinear()
                         .domain(d3.extent(dates))
                         .range([margin.left, width - margin.right]);
@@ -500,8 +512,8 @@
                         .style("text-anchor", "start");
 
                     svg.append("text")
-                        .attr("x", width * 0.20)
-                        .attr("y", height * 0.30)
+                        .attr("x", width * 0.10)
+                        .attr("y", height * 0.40)
                         .attr("class", "bgtext")
                         .style("font-variant", "small-caps")
                         .style("font-size", "2.5em")
@@ -623,6 +635,84 @@
                         .style("fill", function (d) {
                             return myColor1(+d.value)
                         });
+                        var dista=50;
+                    svg.append("path")
+                .attr("fill", "none")
+                .attr("class","annot")
+                .attr("stroke", "black")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-03-27"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-27"))).toString() + " " + (0+dista).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 15+dista)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("USA cases"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 28+dista)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("pass 100K"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-27")) + 4)             
+                    .attr("y", 41+dista)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("Mar 27"); 
+
+
+                svg.append("path")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("class","annot")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-13"))).toString() + " " + (0).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("y", 15)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("National Emergency"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("y", 28)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("Travel ban"); 
+
+
+                    svg.append("path")
+                .attr("class","annot")
+                .attr("fill", "none")
+                .attr("stroke", "black")
+                .attr("stroke-dasharray", "5,5")
+                .attr("stroke-width", 1.5)
+                .attr("d", "M" + (x(parser("2020-06-10"))).toString() + " " + (height).toString() + "," + (x(parser("2020-06-10"))).toString() + " " + (0).toString() );
+
+                svg.append("text")
+                    .attr("x", x(parser("2020-06-10")) + 4)             
+                    .attr("y", 15)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("USA cases"); 
+                svg.append("text")
+                    .attr("x", x(parser("2020-06-10")) + 4)             
+                    .attr("y", 28)
+                    .attr("class","annot")
+                    .attr("text-anchor", "left")  
+                    .style("font-size", "12px")
+                    .text("pass 2M"); 
 
                 }
 

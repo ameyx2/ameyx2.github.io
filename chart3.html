@@ -42,7 +42,8 @@
 
 <body>
     <div>
-        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 infections and spread across different states of Continental USA
+        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 infections and spread across different states of
+            Continental USA
         </h2>
         <h5 style="margin-left:30px;"><span style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id:
                     ameyhp2@illinois.edu</a></span><span>source: <a
@@ -251,7 +252,7 @@
                     .text("Deaths Reported");
 
 
-                    
+
 
 
 
@@ -309,7 +310,7 @@
                 // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
                 var bandw = xscale.bandwidth();
                 // console.log(bandw);
-                svg.selectAll("rect")
+                var rects = svg.selectAll("rect")
                     .data(statetotdeaths)
                     .enter().append("rect")
                     .attr("width", bandw * 0.02)
@@ -324,7 +325,8 @@
                     })
                     .style("fill", function (d) {
                         return myColor1(+d.value)
-                    })
+                    });
+                    rects
                     .on("mouseover", function (d) {
                         div.transition()
                             .duration(200)
@@ -371,55 +373,64 @@
                 //     .exit()
                 //     .remove();
 
-                    
+
                 svg.append("path")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .attr("stroke-dasharray", "5,5")
-                .attr("stroke-width", 1.5)
-                .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(parser("2020-03-13"))).toString() + " " + (0).toString() );
+                    .attr("fill", "none")
+                    .attr("stroke", "black")
+                    .attr("class", "annot")
+                    .attr("stroke-dasharray", "5,5")
+                    .attr("stroke-width", 1.5)
+                    .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (x(
+                        parser("2020-03-13"))).toString() + " " + (0).toString());
 
                 svg.append("text")
-                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("x", x(parser("2020-03-13")) + 4)
                     .attr("y", 15)
-                    .attr("text-anchor", "left")  
+                    .attr("text-anchor", "left")
                     .style("font-size", "12px")
-                    .text("National Emergency"); 
+                    .attr("class", "annot")
+                    .text("National Emergency");
                 svg.append("text")
-                    .attr("x", x(parser("2020-03-13")) + 4)             
+                    .attr("x", x(parser("2020-03-13")) + 4)
                     .attr("y", 28)
-                    .attr("text-anchor", "left")  
+                    .attr("class", "annot")
+                    .attr("text-anchor", "left")
                     .style("font-size", "12px")
-                    .text("Travel ban"); 
+                    .text("Travel ban");
 
 
                 // var dista=50;
                 svg.append("path")
-                .attr("fill", "none")
-                .attr("stroke", "black")
-                .attr("stroke-dasharray", "5,5")
-                .attr("stroke-width", 1.5)
-                .attr("d", "M" + (x(parser("2020-05-27"))).toString() + " " + (height).toString() + "," + (x(parser("2020-05-27"))).toString() + " " + (0).toString() );
-    
+                    .attr("fill", "none")
+                    .attr("class", "annot")
+                    .attr("stroke", "black")
+                    .attr("stroke-dasharray", "5,5")
+                    .attr("stroke-width", 1.5)
+                    .attr("d", "M" + (x(parser("2020-05-27"))).toString() + " " + (height).toString() + "," + (x(
+                        parser("2020-05-27"))).toString() + " " + (0).toString());
+
                 svg.append("text")
-                    .attr("x", x(parser("2020-05-27")) + 4)             
+                    .attr("x", x(parser("2020-05-27")) + 4)
                     .attr("y", 15)
-                    .attr("text-anchor", "left")  
+                    .attr("class", "annot")
+                    .attr("text-anchor", "left")
                     .style("font-size", "12px")
-                    .text("USA deaths"); 
+                    .text("USA deaths");
                 svg.append("text")
-                    .attr("x", x(parser("2020-05-27")) + 4)             
+                    .attr("x", x(parser("2020-05-27")) + 4)
                     .attr("y", 28)
-                    .attr("text-anchor", "left")  
+                    .attr("class", "annot")
+                    .attr("text-anchor", "left")
                     .style("font-size", "12px")
-                    .text("pass 100K"); 
+                    .text("pass 100K");
                 svg.append("text")
-                    .attr("x", x(parser("2020-05-27")) + 4)             
+                    .attr("x", x(parser("2020-05-27")) + 4)
                     .attr("y", 41)
-                    .attr("text-anchor", "left")  
+                    .attr("class", "annot")
+                    .attr("text-anchor", "left")
                     .style("font-size", "12px")
                     .text("May 27");
-                
+
 
                 // A function that update the chart
                 function update(selectedGroup) {
@@ -455,6 +466,8 @@
                     d3.selectAll("rect")
                         .remove();
                     d3.selectAll(".bgtext")
+                        .remove();
+                    d3.selectAll(".annot")
                         .remove();
                     x = d3.scaleLinear()
                         .domain(d3.extent(dates))
@@ -521,12 +534,12 @@
                     //     .attr("stroke", function (d) {
                     //         return myColor1(+d.value)
                     //     })
-                    console.log(dates)
+                    // console.log(dates)
                     xscale = d3.scaleBand().domain(d3.extent(dates)).range([margin.left, width - margin.right]);
                     // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
                     bandw = xscale.bandwidth();
                     // console.log(bandw);
-                    svg.selectAll("rect")
+                    rects = svg.selectAll("rect")
                         .data(statetotdeaths)
                         .enter().append("rect")
                         .attr("width", bandw * 0.03)
@@ -534,7 +547,8 @@
                         // .attr("x",d => xscale(d.key))
                         .attr("y", function (d) {
                             return y(0);
-                        })
+                        });
+                        rects
                         .transition()
                         .duration(3000)
                         .attr("y", function (d) {
@@ -546,11 +560,12 @@
                         // .attr("x",function(d,i) { return (bandw*i); })
                         .style("fill", function (d) {
                             return myColor1(+d.value)
-                        })
+                        });
+                        rects
                         .on("mouseover", function (d) {
                             div.transition()
                                 .duration(200)
-                                .style("opacity", .9)
+                                .style("opacity", .9);
                             // .style("visibility", "visibile");		
                             div.html("Date: " + (d.key) + "<br/>" + "Deaths reported: " + d.value)
                                 .style("left", (d3.event.pageX) + "px")
@@ -561,6 +576,63 @@
                                 .duration(500)
                                 .style("opacity", 0);
                         });
+                        
+
+                        svg.append("path")
+                        .attr("fill", "none")
+                        .attr("stroke", "black")
+                        .attr("class", "annot")
+                        .attr("stroke-dasharray", "5,5")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", "M" + (x(parser("2020-03-13"))).toString() + " " + (height).toString() + "," + (
+                            x(parser("2020-03-13"))).toString() + " " + (0).toString());
+
+                    svg.append("text")
+                        .attr("x", x(parser("2020-03-13")) + 4)
+                        .attr("y", 15)
+                        .attr("text-anchor", "left")
+                        .style("font-size", "12px")
+                        .attr("class", "annot")
+                        .text("National Emergency");
+                    svg.append("text")
+                        .attr("x", x(parser("2020-03-13")) + 4)
+                        .attr("y", 28)
+                        .attr("class", "annot")
+                        .attr("text-anchor", "left")
+                        .style("font-size", "12px")
+                        .text("Travel ban");
+
+
+                    // var dista=50;
+                    svg.append("path")
+                        .attr("fill", "none")
+                        .attr("class", "annot")
+                        .attr("stroke", "black")
+                        .attr("stroke-dasharray", "5,5")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", "M" + (x(parser("2020-05-27"))).toString() + " " + (height).toString() + "," + (x(parser("2020-05-27"))).toString() + " " + (0).toString());
+
+                    svg.append("text")
+                        .attr("x", x(parser("2020-05-27")) + 4)
+                        .attr("y", 15)
+                        .attr("class", "annot")
+                        .attr("text-anchor", "left")
+                        .style("font-size", "12px")
+                        .text("USA deaths");
+                    svg.append("text")
+                        .attr("x", x(parser("2020-05-27")) + 4)
+                        .attr("y", 28)
+                        .attr("class", "annot")
+                        .attr("text-anchor", "left")
+                        .style("font-size", "12px")
+                        .text("pass 100K");
+                    svg.append("text")
+                        .attr("x", x(parser("2020-05-27")) + 4)
+                        .attr("y", 41)
+                        .attr("class", "annot")
+                        .attr("text-anchor", "left")
+                        .style("font-size", "12px")
+                        .text("May 27");
 
 
                     // svg.selectAll("dot")
@@ -595,6 +667,8 @@
                     // .style("fill", function (d) {
                     //     return myColor1(+d.value)
                     // });
+
+                    
 
                 }
 
