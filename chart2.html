@@ -67,7 +67,20 @@
     <select id="selectButton"></select>
 
     <!-- Create a div where the graph will take place -->
-    <div id="my_dataviz"></div>
+    <div style="clear:both;width:1000px;">
+        <div id="my_dataviz" style="float:left;width:600px;"></div>
+        <div style="float:right;width:280px;margin-left:20px;margin-top:30px">
+            <h5>By March 26, the United States, with the world's third largest population, 
+                surpassed China and Italy as the country with the highest number of confirmed 
+                cases in the world and by March 27 crossed 100K cases. On a per capita basis, 
+                the U.S. had the 11th most cases of 
+                any country. <p>After a group of epidemiologists requested revisions in how the CDC 
+                counts cases and deaths, the CDC in mid-April updated its guidance for counting 
+                COVID-19 cases and deaths to include both confirmed and probable ones.</p> <p>On June 10 US passed 
+            2 Million mark for confirmed cases. With current count by end of July is well over 4M.</p></h5>
+        </div>
+    </div>
+    <!-- <div id="my_dataviz"></div> -->
 
     <!-- Color Scale -->
 
@@ -79,7 +92,7 @@
                 bottom: 60,
                 left: 60
             },
-            width = 900 - margin.left - margin.right,
+            width = 700 - margin.left - margin.right,
             height = 400 - margin.top - margin.bottom;
 
         // append the svg object to the body of the page

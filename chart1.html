@@ -75,707 +75,261 @@
 <body>
     <!-- <input type="submit" name="submit" src="images/1.png" />  -->
     <div>
-        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 infections and spread across different states of Continental USA</h2>
-        <h5 style="margin-left:30px;"><span  style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id: ameyhp2@illinois.edu</a></span><span>source: <a href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span></h5>
+        <h2 style="margin-left:30px;margin-bottom: 0px;">Covid-19 infections and spread across different states of
+            Continental USA</h2>
+        <h5 style="margin-left:30px;"><span style="margin-right:200px;"><a href="mailto:ameyhp2@illinois.edu">id:
+                    ameyhp2@illinois.edu</a></span><span>source: <a
+                    href="https://github.com/nytimes/covid-19-data">https://github.com/nytimes/covid-19-data</a> </span>
+        </h5>
     </div>
     <div class="center">
         <!-- <a href=""><img src="images/1.png" width="60" height="60" /> </a>
     <a href=""><img src="images/2.png" width="60" height="60" /> </a>
     <a href=""><img src="images/3.png" width="60" height="60" /> </a> -->
-        <input class="img1" type="image" src="images/1.png" width="60" height="60" onclick="location.href='chart1.html'">
+        <input class="img1" type="image" src="images/1.png" width="60" height="60"
+            onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
-        <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="location.href='chart2.html'">
-        <input class="img1" type="image" src="images/3.png" width="60" height="60" onclick="location.href='chart3.html'">
+        <input class="img1" type="image" src="images/2.png" width="60" height="60"
+            onclick="location.href='chart2.html'">
+        <input class="img1" type="image" src="images/3.png" width="60" height="60"
+            onclick="location.href='chart3.html'">
     </div>
     <div class="center" width="500px">
-        <h5>This is heat map for USA with total COVID19 cases reported<br/>
+        <h5>This is heat map for USA with total COVID19 cases reported<br />
             hover to see details
-         </h5>
-        
-        </div>
+        </h5>
+
+    </div>
     <!-- Initialize a select button -->
     <!-- <select id="selectButton"></select> -->
 
     <div id="tooltip-container"></div>
     <!-- Create a div where the graph will take place -->
-    <div id="canvas-svg"></div>
-
-    <!-- Color Scale -->
+    <div style="clear:both;width:900px;">
+        <div id="canvas-svg" style="float:left;width:600px;"></div>
+        <div style="float:right;width:280px;margin-left:20px;margin-top:30px">
+            <h5>The first confirmed case of Covid19 local transmission in USA was recorded in January 2020,
+                while the first known deaths were reported in February.
+                By the end of March, cases had occurred in all 50 U.S. states, the District of Columbia, and
+                all inhabited U.S. territories except American Samoa. As of June 24, 2020, the U.S. had the
+                most confirmed active cases and deaths in the world.
+                As of July 31, 2020, its death rate had reached 464 per million people,
+                the tenth-highest rate globally.</h5>
+        </div>
+        <!-- Color Scale -->
+    </div>
 
     <script>
-
-        // function replacejscssfile(oldfilename, newfilename, filetype){
-        //     var targetelement=(filetype=="js")? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist using
-        //     var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
-        //     var allsuspects=document.getElementsByTagName(targetelement)
-        //     for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
-        //         if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(oldfilename)!=-1){
-        //             var newelement=createjscssfile(newfilename, filetype)
-        //             allsuspects[i].parentNode.replaceChild(newelement, allsuspects[i])
-        //         }
-        //     }
-        // }
- 
-        // replacejscssfile("oldscript.js", "newscript.js", "js");
-
-        // function drawMap() {
-            d3.select("#canvas-svg").remove();
-            d3.select('body').append("div").attr("id","canvas-svg");
-            // d3.csv("population.csv", function (err, data) {
-            // var formatDateIntoYear = d3.timeFormat("%Y");
-            // var formatDate = d3.timeFormat("%b %Y");
-            d3.csv("us-states.csv", function (err, data) {
-                var config = {
-                    "color1": "#FFA500",
-                    "color2": "#FF0000",
-                    "stateDataColumn": "state",
-                    "valueDataColumn": "cases"
-                }
-                // var config = {"color1":"#d3e5ff","color2":"#08306B",
-                // "stateDataColumn":"state_or_territory",
-                // "valueDataColumn":"population_estimate_for_july_1_2013_number"};
+        d3.select("#canvas-svg").remove();
+        d3.select('body').append("div").attr("id", "canvas-svg");
+        // d3.csv("population.csv", function (err, data) {
+        // var formatDateIntoYear = d3.timeFormat("%Y");
+        // var formatDate = d3.timeFormat("%b %Y");
+        d3.csv("us-states.csv", function (err, data) {
+            var config = {
+                "color1": "#FFA500",
+                "color2": "#FF0000",
+                "stateDataColumn": "state",
+                "valueDataColumn": "cases"
+            }
+            // var config = {"color1":"#d3e5ff","color2":"#08306B",
+            // "stateDataColumn":"state_or_territory",
+            // "valueDataColumn":"population_estimate_for_july_1_2013_number"};
 
 
-                var WIDTH = 800,
-                    HEIGHT = 500;
+            var WIDTH = 600,
+                HEIGHT = 500;
 
-                var COLOR_COUNTS = 9;
+            var COLOR_COUNTS = 9;
 
-                var SCALE = 0.7;
+            var SCALE = 0.7;
 
-                function Interpolate(start, end, steps, count) {
-                    var s = start,
-                        e = end,
-                        final = s + (((e - s) / steps) * count);
-                    return Math.floor(final);
-                }
+            function Interpolate(start, end, steps, count) {
+                var s = start,
+                    e = end,
+                    final = s + (((e - s) / steps) * count);
+                return Math.floor(final);
+            }
 
-                function Color(_r, _g, _b) {
-                    var r, g, b;
-                    var setColors = function (_r, _g, _b) {
-                        r = _r;
-                        g = _g;
-                        b = _b;
+            function Color(_r, _g, _b) {
+                var r, g, b;
+                var setColors = function (_r, _g, _b) {
+                    r = _r;
+                    g = _g;
+                    b = _b;
+                };
+
+                setColors(_r, _g, _b);
+                this.getColors = function () {
+                    var colors = {
+                        r: r,
+                        g: g,
+                        b: b
                     };
+                    return colors;
+                };
+            }
 
-                    setColors(_r, _g, _b);
-                    this.getColors = function () {
-                        var colors = {
-                            r: r,
-                            g: g,
-                            b: b
-                        };
-                        return colors;
-                    };
+            function hexToRgb(hex) {
+                var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+                return result ? {
+                    r: parseInt(result[1], 16),
+                    g: parseInt(result[2], 16),
+                    b: parseInt(result[3], 16)
+                } : null;
+            }
+
+            function valueFormat(d) {
+                if (d > 1000000000) {
+                    return Math.round(d / 1000000000 * 10) / 10 + "B";
+                } else if (d > 1000000) {
+                    return Math.round(d / 1000000 * 10) / 10 + "M";
+                } else if (d > 1000) {
+                    return Math.round(d / 1000 * 10) / 10 + "K";
+                } else {
+                    return d;
+                }
+            }
+
+            var COLOR_FIRST = config.color1,
+                COLOR_LAST = config.color2;
+
+            var rgb = hexToRgb(COLOR_FIRST);
+
+            var COLOR_START = new Color(rgb.r, rgb.g, rgb.b);
+
+            rgb = hexToRgb(COLOR_LAST);
+            var COLOR_END = new Color(rgb.r, rgb.g, rgb.b);
+
+            var MAP_STATE = config.stateDataColumn;
+            var MAP_VALUE = config.valueDataColumn;
+
+            var width = WIDTH,
+                height = HEIGHT;
+
+            var valueById = d3.map();
+
+            var startColors = COLOR_START.getColors(),
+                endColors = COLOR_END.getColors();
+
+            var colors = [];
+
+            for (var i = 0; i < COLOR_COUNTS; i++) {
+                var r = Interpolate(startColors.r, endColors.r, COLOR_COUNTS, i);
+                var g = Interpolate(startColors.g, endColors.g, COLOR_COUNTS, i);
+                var b = Interpolate(startColors.b, endColors.b, COLOR_COUNTS, i);
+                colors.push(new Color(r, g, b));
+            }
+
+            var quantize = d3.scale.quantize()
+                .domain([0, 1.0])
+                .range(d3.range(COLOR_COUNTS).map(function (i) {
+                    return i
+                }));
+
+            var path = d3.geo.path();
+
+            var svg = d3.select("#canvas-svg").append("svg")
+                .attr("width", width)
+                .attr("height", height);
+
+
+            d3.tsv("us-state-names.tsv", function (error, names) {
+
+                name_id_map = {};
+                id_name_map = {};
+
+                for (var i = 0; i < names.length; i++) {
+                    name_id_map[names[i].name] = names[i].id;
+                    id_name_map[names[i].id] = names[i].name;
                 }
 
-                function hexToRgb(hex) {
-                    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-                    return result ? {
-                        r: parseInt(result[1], 16),
-                        g: parseInt(result[2], 16),
-                        b: parseInt(result[3], 16)
-                    } : null;
-                }
-
-                function valueFormat(d) {
-                    if (d > 1000000000) {
-                        return Math.round(d / 1000000000 * 10) / 10 + "B";
-                    } else if (d > 1000000) {
-                        return Math.round(d / 1000000 * 10) / 10 + "M";
-                    } else if (d > 1000) {
-                        return Math.round(d / 1000 * 10) / 10 + "K";
-                    } else {
-                        return d;
-                    }
-                }
-
-                var COLOR_FIRST = config.color1,
-                    COLOR_LAST = config.color2;
-
-                var rgb = hexToRgb(COLOR_FIRST);
-
-                var COLOR_START = new Color(rgb.r, rgb.g, rgb.b);
-
-                rgb = hexToRgb(COLOR_LAST);
-                var COLOR_END = new Color(rgb.r, rgb.g, rgb.b);
-
-                var MAP_STATE = config.stateDataColumn;
-                var MAP_VALUE = config.valueDataColumn;
-
-                var width = WIDTH,
-                    height = HEIGHT;
-
-                var valueById = d3.map();
-
-                var startColors = COLOR_START.getColors(),
-                    endColors = COLOR_END.getColors();
-
-                var colors = [];
-
-                for (var i = 0; i < COLOR_COUNTS; i++) {
-                    var r = Interpolate(startColors.r, endColors.r, COLOR_COUNTS, i);
-                    var g = Interpolate(startColors.g, endColors.g, COLOR_COUNTS, i);
-                    var b = Interpolate(startColors.b, endColors.b, COLOR_COUNTS, i);
-                    colors.push(new Color(r, g, b));
-                }
-
-                var quantize = d3.scale.quantize()
-                    .domain([0, 1.0])
-                    .range(d3.range(COLOR_COUNTS).map(function (i) {
-                        return i
-                    }));
-
-                var path = d3.geo.path();
-
-                var svg = d3.select("#canvas-svg").append("svg")
-                    .attr("width", width)
-                    .attr("height", height);
-                    
-
-                d3.tsv("us-state-names.tsv", function (error, names) {
-
-                    name_id_map = {};
-                    id_name_map = {};
-
-                    for (var i = 0; i < names.length; i++) {
-                        name_id_map[names[i].name] = names[i].id;
-                        id_name_map[names[i].id] = names[i].name;
-                    }
-
-                    data.forEach(function (d) {
-                        var id = name_id_map[d[MAP_STATE]];
-                        valueById.set(id, +d[MAP_VALUE]);
-                    });
-
-                    quantize.domain([d3.min(data, function (d) {
-                            return +d[MAP_VALUE]
-                        }),
-                        d3.max(data, function (d) {
-                            return +d[MAP_VALUE]
-                        })
-                    ]);
-
-                    d3.json("us.json", function (error, us) {
-                        svg.append("g")
-                            .attr("class", "states-choropleth")
-                            .selectAll("path")
-                            .data(topojson.feature(us, us.objects.states).features)
-                            .enter().append("path")
-                            .attr("transform", "scale(" + SCALE + ")")
-                            .style("fill", function (d) {
-                                if (valueById.get(d.id)) {
-                                    var i = quantize(valueById.get(d.id));
-                                    var color = colors[i].getColors();
-                                    return "rgb(" + color.r + "," + color.g +
-                                        "," + color.b + ")";
-                                } else {
-                                    return "";
-                                }
-                            })
-                            .attr("d", path)
-                            .on("mousemove", function (d) {
-                                var html = "";
-
-                                html += "<div class=\"tooltip_kv\">";
-                                html += "<span class=\"tooltip_key\">";
-                                html += id_name_map[d.id];
-                                html += "</span>";
-                                html += "<span class=\"tooltip_value\">";
-                                html += (valueById.get(d.id) ? valueFormat(valueById.get(d
-                                    .id)) : "");
-                                html += "";
-                                html += "</span>";
-                                html += "</div>";
-
-                                $("#tooltip-container").html(html);
-                                $(this).attr("fill-opacity", "0.8");
-                                $("#tooltip-container").show();
-
-                                var coordinates = d3.mouse(this);
-
-                                var map_width = $('.states-choropleth')[0]
-                                    .getBoundingClientRect().width;
-
-                                if (d3.event.layerX < map_width / 2) {
-                                    d3.select("#tooltip-container")
-                                        .style("top", (d3.event.layerY + 15) + "px")
-                                        .style("left", (d3.event.layerX + 15) + "px");
-                                } else {
-                                    var tooltip_width = $("#tooltip-container").width();
-                                    d3.select("#tooltip-container")
-                                        .style("top", (d3.event.layerY + 15) + "px")
-                                        .style("left", (d3.event.layerX - tooltip_width -
-                                                30) +
-                                            "px");
-                                }
-                            })
-                            .on("mouseout", function () {
-                                $(this).attr("fill-opacity", "1.0");
-                                $("#tooltip-container").hide();
-                            });
-
-                        svg.append("path")
-                            .datum(topojson.mesh(us, us.objects.states, function (a, b) {
-                                return a !== b;
-                            }))
-                            .attr("class", "states")
-                            .attr("transform", "scale(" + SCALE + ")")
-                            .attr("d", path);
-                    });
-
+                data.forEach(function (d) {
+                    var id = name_id_map[d[MAP_STATE]];
+                    valueById.set(id, +d[MAP_VALUE]);
                 });
-            });
-        // }
 
-        function drawLine() {
-
-            document.querySelectorAll('#lib').forEach(function(d){ d.parentNode.removeChild(d); });
-            
-
-            d3.select("#canvas-svg").remove();
-            d3.select('body').append("div").attr("id","canvas-svg");    
-
-            // set the dimensions and margins of the graph
-            var margin = {
-                    top: 10,
-                    right: 30,
-                    bottom: 60,
-                    left: 60
-                },
-                width = 900 - margin.left - margin.right,
-                height = 400 - margin.top - margin.bottom;
-
-            // append the svg object to the body of the page
-            var svg = d3.select("#canvas-svg")
-                .append("svg")
-                // .attr("preserveAspectRatio", "xMinYMin meet")
-                // .attr("viewBox", "0 0 600 400")
-                // // Class to make it responsive.
-                // .classed("svg-content-responsive", true)
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform",
-                    "translate(" + margin.left + "," + margin.top + ")");
-
-            //Read the data
-            d3.csv("us-counties.csv",
-                function (data) {
-
-                    // statetotcases = d3.rollup(data, v => d3.sum(v, d => d.cases), d => d.date, d => d.state);
-                    // statetotdeaths = d3.rollup(data, v => d3.sum(v, d => d.deaths), d => d.date, d => d.state);
-
-                    // statetotcases = d3.nest()
-                    //     .key(function (d) {
-                    //         return d.state;
-                    //     })
-                    //     .key(function (d) {
-                    //         return d.date;
-                    //     })
-                    //     .rollup(function (v) {
-                    //         return d3.sum(v, function (d) {
-                    //             return d.cases;
-                    //         });
-                    //     })
-                    //     .entries(data);
-
-                    //     statetotcases.forEach(function(d){return d.key})
-
-                    statetotcases1 = data.filter(function (d) {
-                        return d.state == 'Washington';
-                    });
-                    // console.log(JSON.stringify(statetotcases1));
-                    // console.log(JSON.stringify(statetotcases));
-                    // var keys = [];
-                    //     for (var key in statetotcases) {
-                    //         keys.push(key);
-                    //     }
-                    //     console.log(keys);
-                    statetotdeaths = d3.nest()
-                        .key(function (d) {
-                            return d.state;
-                        })
-                        .key(function (d) {
-                            return d.date;
-                        })
-                        .rollup(function (v) {
-                            return d3.sum(v, function (d) {
-                                return d.deaths;
-                            });
-                        })
-                        .entries(data);
-
-                    // console.log( );
-
-                    // List of groups (here I have one group per column)
-                    var allGroup = d3.map(data, function (d) {
-                        return (d.state)
-                    }).keys()
-
-                    // add the options to the button
-                    d3.select("#selectButton")
-                        .selectAll('myOptions')
-                        .data(allGroup)
-                        .enter()
-                        .append('option')
-                        .text(function (d) {
-                            return d;
-                        }) // text showed in the menu
-                        .attr("value", function (d) {
-                            return d;
-                        }) // corresponding value returned by the button
-
-
-                    var selectedOption1 = document.getElementById('selectButton').value;
-                    // console.log(selectedOption1);
-                    // var data1 = data;
-                    var dataFilter1 = data.filter(function (d) {
-                        return d.state == selectedOption1
+                quantize.domain([d3.min(data, function (d) {
+                        return +d[MAP_VALUE]
+                    }),
+                    d3.max(data, function (d) {
+                        return +d[MAP_VALUE]
                     })
+                ]);
 
-                    statetotcases = d3.nest()
-                        .key(function (d) {
-                            return d.date;
-                        })
-                        .rollup(function (v) {
-                            return d3.sum(v, function (d) {
-                                return d.cases;
-                            });
-                        })
-                        .entries(dataFilter1);
-
-                    // console.log(d3.entries(statetotcases));
-                    // statetotcases.forEach(function(element) {
-                    // console.log(element.value);
-                    // });
-
-                    var parser = d3.timeParse("%Y-%m-%d");
-                    var dates = [];
-                    for (let obj of dataFilter1) {
-                        dates.push(parser(obj.date));
-                    }
-                    // console.log(dates);
-
-                    // A color scale: one color for each group
-                    var myColor = d3.scaleOrdinal()
-                        .domain(allGroup)
-                        .range(d3.schemeSet2);
-
-                    var myColor1 = d3.scaleLinear().domain([0, d3.max(statetotcases, function (d) {
-                            return +d.value;
-                        })])
-                        .range(["orange", "red"])
-
-                    // Add X axis --> it is a date format
-                    var x = d3.scaleLinear()
-                        // .domain(d3.extent(dataFilter1, function (d) {
-                        //     return d.date;
-                        // }))
-                        .domain(d3.extent(dates))
-                        .range([0, width]);
+                d3.json("us.json", function (error, us) {
                     svg.append("g")
-                        .attr("transform", "translate(0," + height + ")")
-                        .call(d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%Y-%m-%d")))
-                        .selectAll("text")
-                        .attr("y", 0)
-                        .attr("x", 9)
-                        .attr("dy", ".35em")
-                        .attr("transform", "rotate(90)")
-                        .style("text-anchor", "start");
-
-                    // Add Y axis
-                    var y = d3.scaleLinear()
-                        .domain([0, d3.max(statetotcases, function (d) {
-                            return +d.value;
-                        })])
-                        .range([height, 0]);
-                    svg.append("g")
-                        .call(d3.axisLeft(y))
-                        .append("text")
-                        .attr("class", "axis-title")
-                        .attr("transform", "rotate(-90)")
-                        .attr("y", margin.top)
-                        .attr("dy", ".71em")
-                        .style("text-anchor", "end")
-                        .attr("fill", "#5D6971")
-                        .text("Cases Reported");
-
-                    var area = d3.area()
-                        .x(function (d) {
-                            return x(parser(d.key));
+                        .attr("class", "states-choropleth")
+                        .selectAll("path")
+                        .data(topojson.feature(us, us.objects.states).features)
+                        .enter().append("path")
+                        .attr("transform", "scale(" + SCALE + ")")
+                        .style("fill", function (d) {
+                            if (valueById.get(d.id)) {
+                                var i = quantize(valueById.get(d.id));
+                                var color = colors[i].getColors();
+                                return "rgb(" + color.r + "," + color.g +
+                                    "," + color.b + ")";
+                            } else {
+                                return "";
+                            }
                         })
-                        .y0(height)
-                        .y1(function (d) {
-                            return y(+d.value);
+                        .attr("d", path)
+                        .on("mousemove", function (d) {
+                            var html = "";
+
+                            html += "<div class=\"tooltip_kv\">";
+                            html += "<span class=\"tooltip_key\">";
+                            html += id_name_map[d.id];
+                            html += "</span>";
+                            html += "<span class=\"tooltip_value\">";
+                            html += (valueById.get(d.id) ? valueFormat(valueById.get(d
+                                .id)) : "");
+                            html += "";
+                            html += "</span>";
+                            html += "</div>";
+
+                            $("#tooltip-container").html(html);
+                            $(this).attr("fill-opacity", "0.8");
+                            $("#tooltip-container").show();
+
+                            var coordinates = d3.mouse(this);
+
+                            var map_width = $('.states-choropleth')[0]
+                                .getBoundingClientRect().width;
+
+                            if (d3.event.layerX < map_width / 2) {
+                                d3.select("#tooltip-container")
+                                    .style("top", (d3.event.layerY + 15) + "px")
+                                    .style("left", (d3.event.layerX + 15) + "px");
+                            } else {
+                                var tooltip_width = $("#tooltip-container").width();
+                                d3.select("#tooltip-container")
+                                    .style("top", (d3.event.layerY + 15) + "px")
+                                    .style("left", (d3.event.layerX - tooltip_width -
+                                            30) +
+                                        "px");
+                            }
+                        })
+                        .on("mouseout", function () {
+                            $(this).attr("fill-opacity", "1.0");
+                            $("#tooltip-container").hide();
                         });
 
                     svg.append("path")
-                        .data([statetotcases])
-                        .attr("class", "area")
-                        .attr("d", area)
-                        .style("fill", function (d) {
-                            return myColor1(+d.value)
-                        });
-                    // Initialize line with first group of the list
-                    var line = svg
-                        .append('g')
-                        .append("path")
-                        .datum(statetotcases)
-                        // .datum(data.filter(function (d) {
-                        //     return d.state == selectedOption1
-                        // }))
-                        .attr("d", d3.line()
-                            .x(function (d) {
-                                return x(parser(d.key))
-                            })
-                            .y(function (d) {
-                                return y(+d.value)
-                            })
-                        )
-                        .attr("stroke", function (d) {
-                            return myColor1(+d.value)
-                        })
-                        .style("stroke-width", 4)
-                        .style("fill", "none");
+                        .datum(topojson.mesh(us, us.objects.states, function (a, b) {
+                            return a !== b;
+                        }))
+                        .attr("class", "states")
+                        .attr("transform", "scale(" + SCALE + ")")
+                        .attr("d", path);
+                });
 
-                    var div = d3.select("body").append("div")
-                        .attr("class", "tooltip")
-                        .style("opacity", 0)
-                        .style("position", "absolute")
-                        // .style("z-index", "10")
-                        // .style("visibility", "hidden")
-                        .style("background", "#ddd");
+            });
+        });
+        // }
 
-                    // var xscale=d3.scaleBand().domain(d3.extent(dates)).range([0,width - margin.right]);
-                    // // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
-                    // var bandw=xscale.bandwidth();
-                    // console.log(bandw);
-                    // svg.selectAll("rect")
-                    //     .data(statetotcases)
-                    //     .enter().append("rect")
-                    //     .attr("width",xscale.bandwidth())
-                    //     .attr("height",function(d) { return height - y(+d.value); })
-                    //     // .attr("x",function(d,i) { return (bandw*i); })
-                    //     .attr("x",d => x(new Date(d.key)))
-                    //     // .attr("x",d => xscale(d.key))
-                    //     .attr("y",function(d) { return y(+d.value); })
-                    //     .style("fill", function (d) {
-                    //     return myColor1(+d.value)
-                    // })
-                    // .on("mouseover", function (d) {
-                    //     div.transition()
-                    //         .duration(200)
-                    //         .style("opacity", .9)
-                    //     // .style("visibility", "visibile");		
-                    //     div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                    //         .style("left", (d3.event.pageX) + "px")
-                    //         .style("top", (d3.event.pageY - 28) + "px");
-                    // })
-                    // .on("mouseout", function (d) {
-                    //     div.transition()
-                    //         .duration(500)
-                    //         .style("opacity", 0);
-                    // });
-
-                    svg.selectAll("dot")
-                        .data(statetotcases)
-                        .enter()
-                        .append("circle")
-                        .style("fill", function (d) {
-                            return myColor1(+d.value)
-                        })
-                        .attr("r", 3.5)
-                        .attr("cx", function (d) {
-                            return x(parser(d.key));
-                        })
-                        .attr("cy", function (d) {
-                            return y(+d.value);
-                        })
-                        .on("mouseover", function (d) {
-                            div.transition()
-                                .duration(200)
-                                .style("opacity", .9)
-                            // .style("visibility", "visibile");		
-                            div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                                .style("left", (d3.event.pageX) + "px")
-                                .style("top", (d3.event.pageY - 28) + "px");
-                        })
-                        .on("mouseout", function (d) {
-                            div.transition()
-                                .duration(500)
-                                .style("opacity", 0);
-                        })
-                        .exit()
-                        .remove();
-
-                    // A function that update the chart
-                    function update(selectedGroup) {
-
-                        // Create new data with the selection?
-                        dataFilter1 = data.filter(function (d) {
-                            return d.state == selectedGroup
-                        })
-                        // console.log(dataFilter1);
-                        statetotcases = d3.nest()
-                            .key(function (d) {
-                                return d.date;
-                            })
-                            .rollup(function (v) {
-                                return d3.sum(v, function (d) {
-                                    return d.cases;
-                                });
-                            })
-                            .entries(dataFilter1);
-
-                        dates = [];
-                        for (let obj of dataFilter1) {
-                            dates.push(parser(obj.date));
-                        }
-                        // console.log(dates);
-                        // Add X axis --> it is a date format
-                        d3.selectAll(".tick")
-                            .remove();
-                        d3.selectAll("circle")
-                            .remove();
-                        d3.selectAll(".area")
-                            .remove();
-                        d3.selectAll("rect")
-                            .remove();
-                        x = d3.scaleLinear()
-                            .domain(d3.extent(dates))
-                            .range([margin.left, width - margin.right]);
-                        svg.append("g")
-                            .attr("transform", "translate(0," + height + ")")
-                            .call(d3.axisBottom(x).ticks(7).tickFormat(d3.timeFormat("%Y-%m-%d")))
-                            .selectAll("text")
-                            .attr("y", 0)
-                            .attr("x", 9)
-                            .attr("dy", ".35em")
-                            .attr("transform", "rotate(90)")
-                            .style("text-anchor", "start");
-
-                        // Add Y axis
-                        y = d3.scaleLinear()
-                            .domain([0, d3.max(statetotcases, function (d) {
-                                return +d.value;
-                            })])
-                            .range([height, 0]);
-                        svg.append("g")
-                            .call(d3.axisLeft(y));
-
-                        area = d3.area()
-                            .x(function (d) {
-                                return x(parser(d.key));
-                            })
-                            .y0(height)
-                            .y1(function (d) {
-                                return y(+d.value);
-                            });
-
-                        svg.append("path")
-                            .data([statetotcases])
-                            .attr("class", "area")
-                            .attr("d", area)
-                            .style("fill", function (d) {
-                                return myColor1(+d.value)
-                            });
-
-                        // Give these new data to update line
-                        line
-                            .datum(statetotcases)
-                            // .transition()
-                            // .duration(1000)
-                            .attr("d", d3.line()
-                                .x(function (d) {
-                                    return x(parser(d.key))
-                                })
-                                .y(function (d) {
-                                    return y(+d.value)
-                                })
-                            )
-                            .attr("stroke", function (d) {
-                                return myColor1(+d.value)
-                            })
-
-                        // xscale=d3.scaleBand().domain(d3.extent(dates)).range([margin.left,width - margin.right]);
-                        // // var yscale=d3.scaleLinear().domain([0,d3.max(data)]).range([height,0]);
-                        // bandw=xscale.bandwidth();
-                        // // console.log(bandw);
-                        // svg.selectAll("rect")
-                        //     .data(statetotcases)
-                        //     .enter().append("rect")
-                        //     .attr("width",xscale.bandwidth())
-                        //     .attr("height",function(d) { return height - y(+d.value); })
-                        //     // .attr("x",function(d,i) { return (bandw*i); })
-                        //     .attr("x",d => x(new Date(d.key)))
-                        //     // .attr("x",d => xscale(d.key))
-                        //     .attr("y",function(d) { return y(+d.value); })
-                        //     .style("fill", function (d) {
-                        //     return myColor1(+d.value)
-                        // })
-                        // .on("mouseover", function (d) {
-                        //     div.transition()
-                        //         .duration(200)
-                        //         .style("opacity", .9)
-                        //     // .style("visibility", "visibile");		
-                        //     div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                        //         .style("left", (d3.event.pageX) + "px")
-                        //         .style("top", (d3.event.pageY - 28) + "px");
-                        // })
-                        // .on("mouseout", function (d) {
-                        //     div.transition()
-                        //         .duration(500)
-                        //         .style("opacity", 0);
-                        // });
-
-
-                        svg.selectAll("dot")
-                            .data(statetotcases)
-                            .enter()
-                            .append("circle")
-                            .attr("r", 5)
-                            .attr("cx", function (d) {
-                                return x(parser(d.key));
-                            })
-                            .attr("cy", function (d) {
-                                return y(+d.value);
-                            })
-                            .on("mouseover", function (d) {
-                                div.transition()
-                                    .duration(200)
-                                    .style("opacity", .9)
-                                // .style("visibility", "visibile");		
-                                div.html("Date: " + (d.key) + "<br/>" + "Cases reported: " + d.value)
-                                    .style("left", (d3.event.pageX) + "px")
-                                    .style("top", (d3.event.pageY - 28) + "px");
-                            })
-                            .on("mouseout", function (d) {
-                                div.transition()
-                                    .duration(500)
-                                    .style("opacity", 0);
-                            });
-                        // .exit()
-                        // .remove();
-
-                        svg.selectAll("circle")
-                            .style("fill", function (d) {
-                                return myColor1(+d.value)
-                            });
-
-                    }
-
-                    // When the button is changed, run the updateChart function
-                    d3.select("#selectButton").on("change", function (d) {
-                        // recover the option that has been chosen
-                        var selectedOption = d3.select(this).property("value")
-                        // run the updateChart function with this selected option
-                        update(selectedOption)
-                    })
-
-                })
-
-        }
+       
     </script>
 </body>
 
