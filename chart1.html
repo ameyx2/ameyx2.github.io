@@ -66,9 +66,19 @@
         }
 
         .img1 {
-            padding-left: 40px;
-            border: none;
-        }
+  background: #ededed;
+  border: 1px solid #ccc;
+  padding: 10px 30px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.img1:active {
+  background: #e5e5e5;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+   outline: none;
+}
     </style>
 </head>
 
@@ -86,13 +96,13 @@
         <!-- <a href=""><img src="images/1.png" width="60" height="60" /> </a>
     <a href=""><img src="images/2.png" width="60" height="60" /> </a>
     <a href=""><img src="images/3.png" width="60" height="60" /> </a> -->
-        <input class="img1" type="image" src="images/1.png" width="60" height="60"
-            onclick="location.href='chart1.html'">
-        <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
-        <input class="img1" type="image" src="images/2.png" width="60" height="60"
-            onclick="location.href='chart2.html'">
-        <input class="img1" type="image" src="images/3.png" width="60" height="60"
-            onclick="location.href='chart3.html'">
+    <input class="img1" type="image" src="images/1.png" width="40" height="40"
+    onclick="location.href='chart1.html'">
+<!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
+<input class="img1" type="image" src="images/2.png" width="40" height="40"
+    onclick="location.href='chart2.html'">
+<input class="img1" type="image" src="images/3.png" width="40" height="40"
+    onclick="location.href='chart3.html'">
     </div>
     <div class="center" width="500px">
         <h5>This is heat map for USA with total COVID19 cases reported<br />

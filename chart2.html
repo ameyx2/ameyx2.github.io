@@ -33,10 +33,24 @@
             /* padding: 30px; */
         }
 
-        .img1 {
+        /* .img1 {
             padding-left: 40px;
             border: none;
-        }
+        } */
+        .img1 {
+  background: #ededed;
+  border: 1px solid #ccc;
+  padding: 10px 30px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.img1:active {
+  background: #e5e5e5;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+   outline: none;
+}
     </style>
 </head>
 
@@ -51,12 +65,12 @@
 
     </div>
     <div class="center">
-        <input class="img1" type="image" src="images/1.png" width="60" height="60"
+        <input class="img1" type="image" src="images/1.png" width="40" height="40"
             onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
-        <input class="img1" type="image" src="images/2.png" width="60" height="60"
+        <input class="img1" type="image" src="images/2.png" width="40" height="40"
             onclick="location.href='chart2.html'">
-        <input class="img1" type="image" src="images/3.png" width="60" height="60"
+        <input class="img1" type="image" src="images/3.png" width="40" height="40"
             onclick="location.href='chart3.html'">
         <!-- Initialize a select button -->
     </div>
@@ -64,7 +78,12 @@
         <h5>This chart shows data for state wise total number of COVID19 cases reported </h5>
 
     </div>
-    <select id="selectButton"></select>
+    <div style="margin:0px;padding:0px">
+        <span style="display: inline-block;"><select id="selectButton"></select></span>
+    <span style="display: inline-block;"><img src="images/arrow.png" width="60" height="13" 
+        style="margin-left:5px;"></img></span>
+    <span style="display: inline-block;margin-left:2px;"><h4 style="margin:0px;padding:0px">select State</h4></span>
+        </div>
 
     <!-- Create a div where the graph will take place -->
     <div style="clear:both;width:1000px;">

@@ -34,9 +34,19 @@
         }
 
         .img1 {
-            padding-left: 40px;
-            border: none;
-        }
+  background: #ededed;
+  border: 1px solid #ccc;
+  padding: 10px 30px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.img1:active {
+  background: #e5e5e5;
+  -webkit-box-shadow: inset 0px 0px 5px #c1c1c1;
+     -moz-box-shadow: inset 0px 0px 5px #c1c1c1;
+          box-shadow: inset 0px 0px 5px #c1c1c1;
+   outline: none;
+}
     </style>
 </head>
 
@@ -52,12 +62,12 @@
 
     </div>
     <div class="center">
-        <input class="img1" type="image" src="images/1.png" width="60" height="60"
+        <input class="img1" type="image" src="images/1.png" width="40" height="40"
             onclick="location.href='chart1.html'">
         <!-- <input class="img1" type="image" src="images/2.png" width="60" height="60" onclick="drawLine()"> -->
-        <input class="img1" type="image" src="images/2.png" width="60" height="60"
+        <input class="img1" type="image" src="images/2.png" width="40" height="40"
             onclick="location.href='chart2.html'">
-        <input class="img1" type="image" src="images/3.png" width="60" height="60"
+        <input class="img1" type="image" src="images/3.png" width="40" height="40"
             onclick="location.href='chart3.html'">
         <!-- Initialize a select button -->
     </div>
@@ -65,8 +75,13 @@
         <h5>This chart shows data for state wise total number of COVID19 deaths reported</h5>
 
     </div>
-    <select id="selectButton"></select>
-
+    <div height="40" >
+    <span style="display: inline-block;"><select id="selectButton"></select></span>
+<span style="display: inline-block;"><img src="images/arrow.png" width="60" height="13" 
+    style="margin-left:5px;"></img></span>
+<span style="display: inline-block;margin-left:2px;"><h4>select State</h4></span>
+    </div>
+    </div>
     <div style="clear:both;width:1000px;">
         <div id="my_dataviz" style="float:left;width:600px;"></div>
         <div style="float:right;width:280px;margin-left:20px;margin-top:30px">
